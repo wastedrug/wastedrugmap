@@ -18,6 +18,12 @@ export default function MapBox() {
         position: naver.maps.Position.TOP_RIGHT,
       },
     });
+
+    // 마커 그리기
+    const marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(37.3595704, 127.105399),
+      map: map,
+    });
   }, [lat, lng]);
   return (
     <div>
