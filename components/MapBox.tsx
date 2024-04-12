@@ -1,15 +1,28 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import useGeolocation from '@/hooks/useGeolocation';
+import { initialize } from 'next/dist/server/lib/render-server';
+import { useEffect, useRef, useState } from 'react';
 
 export default function MapBox() {
-  const mapElement = useRef<HTMLDivElement | null>(null);
-  const lat = 37.3595704; // 네이버 본사 위도 좌표
-  const lng = 127.105399; // 네이버 본사 경도 좌표
+  const mapElement = useRef<HTMLDivElement>(null);
+  const currentMyLocation = useGeolocation(); // 현재 위치 정보 가져오기
 
-  useEffect(() => {
-    const location = new naver.maps.LatLng(lat, lng);
+  // const [lat, setLat] = useState<number>(37.5666);
+  // const [lng, setLng] = useState<number>(126.979);
+
+  // useEffect(() => {
+  //   setLat(currentMyLocation?.coordinates?.lat);
+  //   setLng(currentMyLocation?.coordinates?.lng);
+  // }, [currentMyLocation]);
+
+  const lat = currentMyLocation?.coordinates?.lat ?? 37.5666;
+  const lng = currentMyLocation?.coordinates?.lng ?? 126.979;
+
+  const initializeMap = () => {
+    if (!window.naver || !mapElement.current) return;
+    const location = new window.naver.maps.LatLng(lat, lng);
     //지도 그리기
-    const map = new naver.maps.Map('map', {
+    const map = new window.naver.maps.Map(mapElement.current, {
       center: location,
       zoomControl: true, // 줌 설정
       zoom: 15,
@@ -18,22 +31,28 @@ export default function MapBox() {
         position: naver.maps.Position.TOP_RIGHT,
       },
     });
-
     // 마커 그리기
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(lat, lng),
+    new window.naver.maps.Marker({
+      position: location,
       map: map,
     });
+  };
+
+  useEffect(() => {
+    if (!window.naver) {
+      const script = document.createElement('script');
+      script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`;
+      script.async = true;
+      script.onload = initializeMap;
+      document.body.appendChild(script);
+    } else {
+      initializeMap();
+    }
   }, [lat, lng]);
+
   return (
     <div>
-      <script
-        type="text/javascript"
-        src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`}
-      ></script>
-      <div id="map" style={{ width: '100vw', height: '100vh' }}>
-        <div ref={mapElement}></div>
-      </div>
+      <div ref={mapElement} style={{ width: '100vw', height: '100vh' }} />
     </div>
   );
 }
