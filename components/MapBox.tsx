@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 
 export default function MapBox() {
   const mapElement = useRef<HTMLDivElement | null>(null);
-  const lat = 37.3595704;
-  const lng = 127.105399;
+  const lat = 37.3595704; // 네이버 본사 위도 좌표
+  const lng = 127.105399; // 네이버 본사 경도 좌표
 
   useEffect(() => {
     const location = new naver.maps.LatLng(lat, lng);
@@ -21,7 +21,7 @@ export default function MapBox() {
 
     // 마커 그리기
     const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(37.3595704, 127.105399),
+      position: new naver.maps.LatLng(lat, lng),
       map: map,
     });
   }, [lat, lng]);
