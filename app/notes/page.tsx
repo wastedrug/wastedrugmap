@@ -8,11 +8,8 @@ export default async function Notes() {
 
   await supabase.auth.getUser();
   const session = supabase.auth.getSession();
-  console.log('session', session);
 
   const { data: notes, error } = await supabase.from('notes').select('*');
-
-  console.log('notes', notes);
 
   return <pre>{JSON.stringify(notes, null, 2)}</pre>;
 }

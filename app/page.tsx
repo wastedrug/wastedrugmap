@@ -2,10 +2,8 @@ import MapBox from '@/components/MapBox';
 
 export default function Index() {
   return (
-    <div>
-      <main>
-        <MapBox />
-      </main>
-    </div>
+    <main style={{ width: '100%', height: '100%' }}>
+      <MapBox />
+    </main>
   );
 }
