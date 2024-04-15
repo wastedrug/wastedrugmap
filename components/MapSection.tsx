@@ -1,12 +1,24 @@
+'use client';
+import useMap from '@/hooks/useMap';
 import MapBox from './MapBox';
 
+import { Coordinates } from '@/types/store';
+import { NaverMap } from '@/types/map';
+
+export const INITIAL_CENTER: Coordinates = [37.5666103, 126.9783882];
+export const INITIAL_ZOOM = 10;
+
 const MapSection = () => {
+  const { initailizeMap } = useMap();
+
+  const onLoadMap = (map: NaverMap) => {
+    initailizeMap(map);
+  };
+
   return (
-    <MapBox
-      onLoad={() => {
-        return console.log('loaded!');
-      }}
-    />
+    <>
+      <MapBox onLoad={onLoadMap} />
+    </>
   );
 };
 

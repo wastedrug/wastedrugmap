@@ -6,6 +6,7 @@ import { Coordinates } from '@/types/store';
 import { NaverMap } from '@/types/map';
 import { INIITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
 import { geoLocation } from '@/hooks/useGeolocation';
+
 type mapProps = {
   mapId?: string;
   initailCenter?: Coordinates;
@@ -13,7 +14,7 @@ type mapProps = {
   onLoad?: (map: NaverMap) => void;
 };
 
-const Map = ({
+const MapBox = ({
   mapId = 'map',
   initailCenter = INIITAIL_CENTER,
   initailZoom = INITIAL_ZOOM,
@@ -24,19 +25,20 @@ const Map = ({
     coordinates: initailCenter,
   });
   const mapRef = useRef<NaverMap | null>(null);
-
   const geolocation = useGeolocation();
 
   useEffect(() => {
-    setMyLocation(geolocation);
-  }, [geolocation]);
+    if (geolocation.loaded) {
+      setMyLocation(geolocation);
+    }
+  }, [geolocation.loaded]);
 
-  if (!myLocation || !myLocation.loaded || !myLocation.coordinates) return;
-  initailCenter = myLocation.coordinates;
+  if (!myLocation || !myLocation.loaded) return;
+
   const initializeMap = () => {
     //지도 그리기
     const mapOption = {
-      center: new window.naver.maps.LatLng(...initailCenter),
+      center: new window.naver.maps.LatLng(...myLocation.coordinates),
       zoom: initailZoom,
       minZoom: 10,
       mapDataControl: false,
@@ -55,37 +57,22 @@ const Map = ({
     if (onLoad) {
       onLoad(map);
     }
+    // 지도에 마커 그리기
+    const marker = new window.naver.maps.Marker({
+      position: new window.naver.maps.LatLng(...myLocation.coordinates),
+      map: map,
+    });
   };
-
-  // useEffect(() => {
-  //   return () => {
-  //     mapRef.current?.destroy();
-  //   };
-  // }, []);
-  // // 마커 그리기
-
-  // useEffect(() => {
-  //   if (!window.naver) {
-  //     const script = document.createElement('script');
-  //     script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`;
-  //     script.async = true;
-  //     script.onload = () => initializeMap(); // Assign a function to onload event handler
-  //     document.body.appendChild(script);
-  //   } else {
-  //     initializeMap();
-  //   }
-  // }, [geolocation]);
-
   return (
     <>
       <Script
         strategy="afterInteractive"
         type="text/javascript"
         src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`}
-        onReady={initializeMap}
+        onLoad={initializeMap}
       />
       <div id={mapId} style={{ width: '100vw', height: '100vh' }} />
     </>
   );
 };
-export default Map;
+export default MapBox;
