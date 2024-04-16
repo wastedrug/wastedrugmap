@@ -1,9 +1,9 @@
 
 const { createClient } = require('@supabase/supabase-js');
+const env = require('dotenv');
 
-
-const supabaseUrl = 'https://feurbdzfxgrkmupdnlxd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZldXJiZHpmeGdya211cGRubHhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTEzNTI0OTIsImV4cCI6MjAyNjkyODQ5Mn0.h0DX3G2WFGTp1W1F_K5K4FLFiDYpirRDV_HZU5kmMLI';
+const supabaseUrl = 'process.env.NEXT_PUBLIC_SUPABASE_URL';
+const supabaseKey = 'process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const tableName = 'boxInfo';
