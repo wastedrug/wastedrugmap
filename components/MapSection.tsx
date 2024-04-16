@@ -1,6 +1,6 @@
 'use client';
 import useMap from '@/hooks/useMap';
-import MapBox from './MapBox';
+import Map from './Map';
 
 import { Coordinates } from '@/types/store';
 import { NaverMap } from '@/types/map';
@@ -17,7 +17,7 @@ const MapSection = () => {
 
   return (
     <>
-      <MapBox onLoad={onLoadMap} />
+      <Map onLoad={onLoadMap} />
     </>
   );
 };

@@ -35,3 +35,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/Users/munseunghyeon/workspace/wastedrugmap/app/supainsert.ts
+/Users/munseunghyeon/workspace/wastedrugmap/app/collectionbox.geojson
