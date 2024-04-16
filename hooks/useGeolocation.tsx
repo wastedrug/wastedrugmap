@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Coordinates } from '@/types/store';
 import { INITAIL_CENTER } from './useMap';
-import { on } from 'events';
 
 export type GeoLocation = {
   loaded: boolean;
