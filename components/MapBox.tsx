@@ -4,42 +4,42 @@ import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { Coordinates } from '@/types/store';
 import { NaverMap } from '@/types/map';
-import { INIITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
-import { geoLocation } from '@/hooks/useGeolocation';
+import { INITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
+import { GeoLocation } from '@/hooks/useGeolocation';
 
-type mapProps = {
+type MapProps = {
   mapId?: string;
-  initailCenter?: Coordinates;
-  initailZoom?: number;
+  initialCenter?: Coordinates;
+  initialZoom?: number;
   onLoad?: (map: NaverMap) => void;
 };
 
 const MapBox = ({
   mapId = 'map',
-  initailCenter = INIITAIL_CENTER,
-  initailZoom = INITIAL_ZOOM,
+  initialCenter = INITAIL_CENTER,
+  initialZoom = INITIAL_ZOOM,
   onLoad,
-}: mapProps) => {
-  const [myLocation, setMyLocation] = useState<geoLocation>({
+}: MapProps) => {
+  const [currentMyLocation, setCurrentMyLocation] = useState<GeoLocation>({
     loaded: false,
-    coordinates: initailCenter,
+    coordinates: initialCenter,
   });
   const mapRef = useRef<NaverMap | null>(null);
   const geolocation = useGeolocation();
 
   useEffect(() => {
     if (geolocation.loaded) {
-      setMyLocation(geolocation);
+      setCurrentMyLocation(geolocation);
     }
   }, [geolocation.loaded]);
 
-  if (!myLocation || !myLocation.loaded) return;
+  if (!currentMyLocation.loaded) return;
 
   const initializeMap = () => {
     //지도 그리기
     const mapOption = {
-      center: new window.naver.maps.LatLng(...myLocation.coordinates),
-      zoom: initailZoom,
+      center: new window.naver.maps.LatLng(...currentMyLocation.coordinates),
+      zoom: initialZoom,
       minZoom: 10,
       mapDataControl: false,
       logoControlOptions: {
@@ -58,18 +58,19 @@ const MapBox = ({
       onLoad(map);
     }
     // 지도에 마커 그리기
-    const marker = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(...myLocation.coordinates),
+    new window.naver.maps.Marker({
+      position: new window.naver.maps.LatLng(...currentMyLocation.coordinates),
       map: map,
     });
   };
+
   return (
     <>
       <Script
         strategy="afterInteractive"
         type="text/javascript"
         src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`}
-        onLoad={initializeMap}
+        onReady={initializeMap}
       />
       <div id={mapId} style={{ width: '100vw', height: '100vh' }} />
     </>
