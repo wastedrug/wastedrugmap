@@ -5,6 +5,7 @@ import { Coordinates } from '@/types/store';
 import { NaverMap } from '@/types/map';
 import { INITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
 import { GeoLocation } from '@/hooks/useGeolocation';
+import useMapList from '@/hooks/useMapList';
 
 type MapProps = {
   mapId?: string;
@@ -57,10 +58,15 @@ const Map = ({
       onLoad(map);
     }
     // 지도에 마커 그리기
-    new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(...currentMyLocation.coordinates),
-      map: map,
-    });
+
+    const mapList = useMapList();
+    mapList.then((data) => data?.map((x) => mark(x.latitude, x.longtitud)));
+
+    const mark = (lat: number, long: number) =>
+      new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(lat, long),
+        map: map,
+      });
   };
 
   return (
