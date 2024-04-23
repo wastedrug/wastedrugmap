@@ -60,7 +60,7 @@ const Map = ({
     // 지도에 마커 그리기
 
     const mapList = useMapList();
-    mapList.then((data) => data?.map((x) => mark(x.latitude, x.longtitud)));
+    mapList.then((data) => data?.map((x) => mark(x.latitude, x.longtitude)));
 
     const mark = (lat: number, long: number) =>
       new window.naver.maps.Marker({
