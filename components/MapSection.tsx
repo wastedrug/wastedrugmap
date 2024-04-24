@@ -18,6 +18,7 @@ const MapSection = () => {
   return (
     <>
       <Map onLoad={onLoadMap} />
+      {/* <Markers />  */}
     </>
   );
 };

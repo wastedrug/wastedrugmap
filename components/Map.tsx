@@ -1,3 +1,5 @@
+'use client';
+
 import useGeolocation from '@/hooks/useGeolocation';
 import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
@@ -6,6 +8,20 @@ import { NaverMap } from '@/types/map';
 import { INITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
 import { GeoLocation } from '@/hooks/useGeolocation';
 import useMapList from '@/hooks/useMapList';
+import useSWR from 'swr';
+
+export type BoxProps = {
+  id: number;
+  roadAddr: string;
+  addrDetails: string;
+  telNo: string;
+  management: string;
+  division: string;
+  latitude: number;
+  longtitude: number;
+  created_at: string;
+  updated_at: string;
+};
 
 type MapProps = {
   mapId?: string;
@@ -27,6 +43,17 @@ const Map = ({
   const mapRef = useRef<NaverMap | null>(null);
   const geolocation = useGeolocation();
 
+  const fetcher = (url: string) =>
+    fetch('/api/boxinfo ', {
+      headers: {
+        Accept: 'application / json',
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    }).then((res) => res.json());
+  const { data: boxInfo } = useSWR('/api/boxinfo', fetcher);
+
+  console.log('boxInfo', boxInfo);
   useEffect(() => {
     if (geolocation.loaded) {
       setCurrentMyLocation(geolocation);
@@ -59,10 +86,7 @@ const Map = ({
     }
     // 지도에 마커 그리기
 
-    const mapList = useMapList();
-    mapList.then((data) => data?.map((x) => mark(x.latitude, x.longtitude)));
-
-    const mark = (lat: number, long: number) =>
+    const marker = (lat: number, long: number) =>
       new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(lat, long),
         map: map,

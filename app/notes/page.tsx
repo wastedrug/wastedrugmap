@@ -12,7 +12,7 @@ export default async function getBoxInfo() {
       if (error) throw new Error();
       return data;
     } catch (err) {
-      alert("데이터를 불러오지 못했습니다");
+      alert('데이터를 불러오지 못했습니다');
       return null;
     }
   };
