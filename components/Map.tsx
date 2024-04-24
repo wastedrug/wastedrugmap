@@ -86,11 +86,46 @@ const Map = ({
     }
     // 지도에 마커 그리기
 
-    const marker = (lat: number, long: number) =>
-      new window.naver.maps.Marker({
-        position: new window.naver.maps.LatLng(lat, long),
-        map: map,
-      });
+    const markers: any[] = [];
+    const infoWindows: any[] = [];
+    const mapList = useMapList();
+    function getClickHandler(seq: any) {
+      return function (e: any) {
+        var marker = markers[seq],
+          infoWindow = infoWindows[seq];
+
+        if (infoWindow.getMap()) {
+          infoWindow.close();
+        } else {
+          infoWindow.open(map, marker);
+        }
+      };
+    }
+
+    mapList.then((data) =>
+      data?.map((x) => {
+        const marker = new window.naver.maps.Marker({
+          position: new window.naver.maps.LatLng(x.latitude, x.longtitude),
+          map: map,
+        });
+
+        const infoWindow = new naver.maps.InfoWindow({
+          content: `<div> <b><h3>${x.addrDetails}</h3></b> </div>
+          <div>  도로명주소 : ${x.roadAddr} </div>
+          <div>  구분 : ${x.division} </div>
+          <div>  담당부서 : ${x.management} </div>
+          `,
+        });
+        markers.push(marker);
+        infoWindows.push(infoWindow);
+
+        naver.maps.Event.addListener(
+          markers[x.id - 1],
+          'click',
+          getClickHandler(x.id - 1),
+        );
+      }),
+    );
   };
 
   return (
