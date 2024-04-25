@@ -1,6 +1,5 @@
 import MapSection from '@/components/MapSection';
 import Map from '@/components/MapSection';
-
 export default function Index() {
   return (
     <main
