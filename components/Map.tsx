@@ -88,7 +88,7 @@ const Map = ({
 
     const markers: any[] = [];
     const infoWindows: any[] = [];
-    const mapList = useMapList();
+
     function getClickHandler(seq: any) {
       return function (e: any) {
         var marker = markers[seq],
@@ -101,31 +101,32 @@ const Map = ({
         }
       };
     }
+    if (boxInfo === undefined) return;
 
-    mapList.then((data) =>
-      data?.map((x) => {
+    if (boxInfo) {
+      boxInfo?.map((box: BoxProps) => {
         const marker = new window.naver.maps.Marker({
-          position: new window.naver.maps.LatLng(x.latitude, x.longtitude),
+          position: new window.naver.maps.LatLng(box.latitude, box.longtitude),
           map: map,
         });
 
         const infoWindow = new naver.maps.InfoWindow({
-          content: `<div> <b><h3>${x.addrDetails}</h3></b> </div>
-          <div>  도로명주소 : ${x.roadAddr} </div>
-          <div>  구분 : ${x.division} </div>
-          <div>  담당부서 : ${x.management} </div>
+          content: `<div> <b><h3>${box.addrDetails}</h3></b> </div>
+          <div>  도로명주소 : ${box.roadAddr} </div>
+          <div>  구분 : ${box.division} </div>
+          <div>  담당부서 : ${box.management} </div>
           `,
         });
         markers.push(marker);
         infoWindows.push(infoWindow);
 
         naver.maps.Event.addListener(
-          markers[x.id - 1],
+          markers[box.id - 1],
           'click',
-          getClickHandler(x.id - 1),
+          getClickHandler(box.id - 1),
         );
-      }),
-    );
+      });
+    }
   };
 
   return (
