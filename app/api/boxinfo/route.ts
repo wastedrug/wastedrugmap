@@ -16,7 +16,7 @@ export  async function GET(
       return NextResponse.json({error: '데이터를 불러오지 못했습니다'}, {status : 500});
 
     }
-    return NextResponse.json({data},{status: 200});
+    return NextResponse.json(data,{status: 200});
   }
 }
 
