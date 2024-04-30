@@ -97,6 +97,15 @@ const Map = ({
         const infoWindow = new naver.maps.InfoWindow({
           content: infoWindowContent,
         });
+        
+        // 지도 클릭시 정보 창 닫기
+        window.naver.maps.Event.addListener(map, 'click', () => {
+          if (infoWindow.getMap()) {
+            infoWindow.close();
+          }
+        });
+
+        // 마커 클릭시 정보창 열고 닫기
         window.naver.maps.Event.addListener(marker, 'click', () => {
           if (infoWindow.getMap()) {
             infoWindow.close();
