@@ -3,7 +3,7 @@
 import useGeolocation, { GeoLocation } from '@/hooks/useGeolocation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
-import { NaverMap, BoxProps, MapProps } from '@/types/map';
+import { NaverMap, BoxProps, MapProps, MarkerProps } from '@/types/map';
 import { INITAIL_CENTER, INITIAL_ZOOM } from '../hooks/useMap';
 import useSWR from 'swr';
 
@@ -77,10 +77,18 @@ const Map = ({
       if (!boxInfo) return;
 
       boxInfo?.forEach((box: BoxProps) => {
-        const marker = new window.naver.maps.Marker({
+        const markerOption = {
           position: new window.naver.maps.LatLng(box.latitude, box.longtitude),
           map: map,
-        });
+          icon: {
+            url: '/images/marker.png',
+            size: new window.naver.maps.Size(50, 52),
+            origin: new window.naver.maps.Point(0, 0),
+            anchor: new window.naver.maps.Point(25, 26),
+            scaledSize: new window.naver.maps.Size(50, 52),
+          },
+        };
+        const marker = new window.naver.maps.Marker(markerOption);
         const infoWindowContent = `<div> <b><h3>${box.addrDetails}</h3></b> </div>
       <div>  도로명주소 : ${box.roadAddr} </div>
       <div>  구분 : ${box.division} </div>

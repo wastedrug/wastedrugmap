@@ -21,3 +21,17 @@ export type MapProps = {
   initialZoom?: number;
   onLoad?: (map: NaverMap) => void;
 };
+
+export type MarkerProps = {
+  map : NaverMap;
+  coordinates : Coordinates;
+  icon : ImageBitmapRenderingContext;
+  onClick : () => void; 
+};
+
+export type ImageIcon = {
+  url : string;
+  size : naver.maps.Size;
+  origin : naver.maps.Point;
+  scaledSize?: naver.maps.Size;
+};
