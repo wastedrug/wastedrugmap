@@ -4,6 +4,7 @@ import { INITAIL_CENTER } from './useMap';
 
 export type GeoLocation = {
   loaded: boolean;
+
   coordinates: Coordinates;
   error?: { code: number; message: string };
 };
