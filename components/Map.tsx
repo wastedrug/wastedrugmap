@@ -59,7 +59,6 @@ const Map = ({
         style: naver.maps.ZoomControlStyle.SMALL,
         position: naver.maps.Position.RIGHT_TOP,
       },
-      passive: true,
     };
 
     const map = new window.naver.maps.Map(mapId, mapOption);
@@ -77,33 +76,27 @@ const Map = ({
     (map: NaverMap) => {
       if (!boxInfo) return;
 
-      boxInfo?.forEach(
-        (box: BoxProps) => {
-          const marker = new window.naver.maps.Marker({
-            position: new window.naver.maps.LatLng(
-              box.latitude,
-              box.longtitude,
-            ),
-            map: map,
-          });
-          const infoWindowContent = `<div> <b><h3>${box.addrDetails}</h3></b> </div>
+      boxInfo?.forEach((box: BoxProps) => {
+        const marker = new window.naver.maps.Marker({
+          position: new window.naver.maps.LatLng(box.latitude, box.longtitude),
+          map: map,
+        });
+        const infoWindowContent = `<div> <b><h3>${box.addrDetails}</h3></b> </div>
       <div>  도로명주소 : ${box.roadAddr} </div>
       <div>  구분 : ${box.division} </div>
       <div>  담당부서 : ${box.management} </div>
       `;
-          const infoWindow = new naver.maps.InfoWindow({
-            content: infoWindowContent,
-          });
-          window.naver.maps.Event.addListener(marker, 'click', () => {
-            if (infoWindow.getMap()) {
-              infoWindow.close();
-            } else {
-              infoWindow.open(map, marker);
-            }
-          });
-        },
-        { passive: true },
-      );
+        const infoWindow = new naver.maps.InfoWindow({
+          content: infoWindowContent,
+        });
+        window.naver.maps.Event.addListener(marker, 'click', () => {
+          if (infoWindow.getMap()) {
+            infoWindow.close();
+          } else {
+            infoWindow.open(map, marker);
+          }
+        });
+      });
     },
     [boxInfo],
   );
