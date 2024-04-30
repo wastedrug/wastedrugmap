@@ -48,8 +48,8 @@ const Map = ({
       zoom: initialZoom,
       minZoom: 9,
       mapDataControl: false,
+      logoControl: true,
       logoControlOptions: {
-        logoControl: true,
         position: window.naver.maps.Position.BOTTOM_RIGHT,
       },
 
