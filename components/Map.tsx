@@ -53,8 +53,8 @@ const Map = ({
         position: window.naver.maps.Position.BOTTOM_RIGHT,
       },
 
+      zoomControl: true,
       zoomControlOptions: {
-        zoomControl: true,
         legendDisabled: true,
         style: naver.maps.ZoomControlStyle.SMALL,
         position: naver.maps.Position.RIGHT_TOP,
