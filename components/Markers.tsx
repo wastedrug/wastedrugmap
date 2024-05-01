@@ -9,11 +9,11 @@ const Markers = () => {
 
   const { data: boxInfo } = useSWR('/api/boxinfo');
   const DIVISION = {
-    주민센터: '1',
-    구청: '2',
-    복지관: '3',
-    '보건소(지소·분소)': '4',
-    기타: '5',
+    주민센터: '0',
+    구청: '1',
+    복지관: '2',
+    '보건소(지소·분소)': '3',
+    기타: '4',
   } as const;
 
   const logDivision = (key: keyof typeof DIVISION) => {
@@ -44,14 +44,14 @@ const Markers = () => {
           content,
           borderColor:
             box.division === '주민센터'
-              ? 'red'
+              ? 'yellow'
               : box.division === '구청'
-                ? 'green'
+                ? 'red'
                 : box.division === '복지관'
-                  ? 'magenta'
+                  ? 'green'
                   : box.division === '보건소(지소·분소)'
-                    ? 'blue'
-                    : 'yellow',
+                    ? 'magenta'
+                    : 'blue',
         });
         window.naver.maps.Event.addListener(map, 'click', () => {
           if (infoWindow.getMap()) {
