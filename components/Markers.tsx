@@ -32,14 +32,13 @@ const Markers = () => {
         };
         const marker = new window.naver.maps.Marker(markerOptions);
 
-        const content = `
-      <div class = 'p-4 .rounded-sm'>
-        <b class = 'text-lg'>${box.addrDetails}</b>
-        <p>도로명 주소 : ${box.roadAddr}</p>
-        <p>구분 : ${box.division}</p>
-        <p>담당 부서 : ${box.telNo ? box.management + '(' + box.telNo + ')' : box.management} </p>
-      </div>
-    `;
+        const content = `<div class='p-4'>
+            <b class='text-lg'>${box.addrDetails}</b>
+            <p>도로명 주소 : ${box.roadAddr}</p>
+            <p>구분 : ${box.division}</p>
+            <p>담당 부서 : ${box.telNo ? box.management + ' (' + `<a href="tel:${box.telNo}">` + box.telNo + `</a>` + ')' : box.management} </p>
+            </div>`;
+
         const infoWindow = new window.naver.maps.InfoWindow({
           content,
           borderWidth: 2,
