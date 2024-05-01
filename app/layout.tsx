@@ -18,12 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SWRProvider>
-      <html lang="en" className={GeistSans.className}>
-        <body>
-          <main className="flex items-center">{children}</main>
-        </body>
-      </html>
-    </SWRProvider>
+    <html lang="en" className={GeistSans.className}>
+      <body>
+        <main className="flex items-center">{children}</main>
+      </body>
+    </html>
   );
 }

@@ -20,8 +20,8 @@ const Map = ({
 
   const mapRef = useRef<NaverMap | null>(null);
   const geolocation = useGeolocation();
-
-  const { data: boxInfo } = useSWR('/api/boxinfo');
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const { data: boxInfo } = useSWR('/api/boxinfo', fetcher);
 
   useEffect(() => {
     geolocation.loaded

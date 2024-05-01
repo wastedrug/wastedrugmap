@@ -1,13 +1,10 @@
 import useSWR from 'swr';
 import Marker from './Marker';
 import { MAP_KEY } from '@/hooks/useMap';
-import { BoxProps, ImageIcon, NaverMap } from '@/types/map';
-import { useCallback, useRef } from 'react';
+import { BoxProps, ImageIcon, MapProps, NaverMap } from '@/types/map';
+import { useCallback, useEffect, useRef } from 'react';
 
 const Markers = () => {
-  const map = useSWR(MAP_KEY).data;
-
-  const { data: boxInfo } = useSWR('/api/boxinfo');
   const DIVISION = {
     주민센터: '0',
     구청: '1',
@@ -15,6 +12,10 @@ const Markers = () => {
     '보건소(지소·분소)': '3',
     기타: '4',
   } as const;
+
+  const map = useSWR(MAP_KEY).data as NaverMap;
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const { data: boxInfo } = useSWR('/api/boxinfo', fetcher);
 
   const convertDivision = (key: keyof typeof DIVISION) => {
     return parseInt(DIVISION[key as keyof typeof DIVISION]);
