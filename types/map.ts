@@ -22,10 +22,12 @@ export type MapProps = {
   onLoad?: (map: NaverMap) => void;
 };
 
+
+
 export type MarkerProps = {
   map : NaverMap;
   coordinates : Coordinates;
-  icon : ImageBitmapRenderingContext;
+  icon : ImageIcon;
   onClick : () => void; 
 };
 

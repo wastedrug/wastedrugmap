@@ -67,56 +67,7 @@ const Map = ({
     if (onLoad) {
       onLoad(map);
     }
-    // 지도에 마커 그리기
-    renderMarkers(map);
   }, [currentMyLocation, initialZoom, boxInfo]);
-
-  // 마커 그리기
-  const renderMarkers = useCallback(
-    (map: NaverMap) => {
-      if (!boxInfo) return;
-
-      boxInfo?.forEach((box: BoxProps) => {
-        const markerOption = {
-          position: new window.naver.maps.LatLng(box.latitude, box.longtitude),
-          map: map,
-          icon: {
-            url: '/images/marker.png',
-            size: new window.naver.maps.Size(50, 52),
-            origin: new window.naver.maps.Point(0, 0),
-            anchor: new window.naver.maps.Point(25, 26),
-            scaledSize: new window.naver.maps.Size(50, 52),
-          },
-        };
-        const marker = new window.naver.maps.Marker(markerOption);
-        const infoWindowContent = `<div> <b><h3>${box.addrDetails}</h3></b> </div>
-      <div>  도로명주소 : ${box.roadAddr} </div>
-      <div>  구분 : ${box.division} </div>
-      <div>  담당부서 : ${box.management} </div>
-      `;
-        const infoWindow = new naver.maps.InfoWindow({
-          content: infoWindowContent,
-        });
-        
-        // 지도 클릭시 정보 창 닫기
-        window.naver.maps.Event.addListener(map, 'click', () => {
-          if (infoWindow.getMap()) {
-            infoWindow.close();
-          }
-        });
-
-        // 마커 클릭시 정보창 열고 닫기
-        window.naver.maps.Event.addListener(marker, 'click', () => {
-          if (infoWindow.getMap()) {
-            infoWindow.close();
-          } else {
-            infoWindow.open(map, marker);
-          }
-        });
-      });
-    },
-    [boxInfo],
-  );
 
   return (
     <>

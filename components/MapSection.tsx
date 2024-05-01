@@ -1,7 +1,7 @@
 'use client';
 import useMap from '@/hooks/useMap';
 import Map from './Map';
-
+import Markers from './Markers';
 import { Coordinates } from '@/types/store';
 import { NaverMap } from '@/types/map';
 
@@ -18,7 +18,7 @@ const MapSection = () => {
   return (
     <>
       <Map onLoad={onLoadMap} />
-      {/* <Markers />  */}
+      <Markers />
     </>
   );
 };
