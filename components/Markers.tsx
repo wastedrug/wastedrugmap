@@ -16,7 +16,7 @@ const Markers = () => {
     기타: '4',
   } as const;
 
-  const logDivision = (key: keyof typeof DIVISION) => {
+  const convertDivision = (key: keyof typeof DIVISION) => {
     return parseInt(DIVISION[key as keyof typeof DIVISION]);
   };
 
@@ -27,7 +27,7 @@ const Markers = () => {
           position: new window.naver.maps.LatLng(box.latitude, box.longtitude),
           map: map,
           icon: generateMarkerImage(
-            logDivision(box.division as keyof typeof DIVISION),
+            convertDivision(box.division as keyof typeof DIVISION),
           ),
         };
         const marker = new window.naver.maps.Marker(markerOptions);
