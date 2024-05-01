@@ -33,25 +33,26 @@ const Markers = () => {
         const marker = new window.naver.maps.Marker(markerOptions);
 
         const content = `
-      <div class = 'p-4'>
+      <div class = 'p-4 .rounded-sm'>
         <b class = 'text-lg'>${box.addrDetails}</b>
         <p>도로명 주소 : ${box.roadAddr}</p>
         <p>구분 : ${box.division}</p>
-        <p>담당 부서 : ${box.management}</p>
+        <p>담당 부서 : ${box.telNo ? box.management + '(' + box.telNo + ')' : box.management} </p>
       </div>
     `;
         const infoWindow = new window.naver.maps.InfoWindow({
           content,
+          borderWidth: 2,
           borderColor:
             box.division === '주민센터'
-              ? 'yellow'
+              ? '#F1B940'
               : box.division === '구청'
-                ? 'red'
+                ? '#DD3121'
                 : box.division === '복지관'
-                  ? 'green'
+                  ? '#407A26'
                   : box.division === '보건소(지소·분소)'
-                    ? 'magenta'
-                    : 'blue',
+                    ? '#D24186'
+                    : '#275798',
         });
         window.naver.maps.Event.addListener(map, 'click', () => {
           if (infoWindow.getMap()) {
