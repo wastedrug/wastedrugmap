@@ -33,8 +33,8 @@ const Markers = () => {
         const marker = new window.naver.maps.Marker(markerOptions);
 
         const content = `
-      <div>
-        <h1>${box.addrDetails}</h1>
+      <div class = 'p-4'>
+        <b class = 'text-lg'>${box.addrDetails}</b>
         <p>도로명 주소 : ${box.roadAddr}</p>
         <p>구분 : ${box.division}</p>
         <p>담당 부서 : ${box.management}</p>
@@ -42,7 +42,16 @@ const Markers = () => {
     `;
         const infoWindow = new window.naver.maps.InfoWindow({
           content,
-          disableAnchor: true,
+          borderColor:
+            box.division === '주민센터'
+              ? 'red'
+              : box.division === '구청'
+                ? 'green'
+                : box.division === '복지관'
+                  ? 'magenta'
+                  : box.division === '보건소(지소·분소)'
+                    ? 'blue'
+                    : 'yellow',
         });
         window.naver.maps.Event.addListener(map, 'click', () => {
           if (infoWindow.getMap()) {
